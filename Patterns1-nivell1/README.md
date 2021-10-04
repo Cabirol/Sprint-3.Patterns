@@ -35,6 +35,10 @@ retorna:
 
 Returns absolute path of the directory containing the currently executing file.
 
+# How to convert Callback to promise:
+
+https://stackabuse.com/converting-callbacks-to-promises-in-node-js/
+
 
 
 
