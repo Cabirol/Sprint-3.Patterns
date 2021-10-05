@@ -42,7 +42,7 @@ const llegirDirectori = dirPath => {
     });
   });
 }
-
+const 
 const llegirArxiu = filePath => {
   return new Promise ((resolve, reject) =>{
     readFile(filePath, "utf8",(error, data) =>{
@@ -62,11 +62,10 @@ const escriureArxiu = (fileName,contingut) => {
 }
 
 
-
 llegirDirectori(inbox)
   .then(result => join(inbox,result[0]))
   .then(result => llegirArxiu(result))
   .then(result => reverseText(result))
-  .then(result => escriureArxiu("file.txt",result))
+  .then(result => escriureArxiu("a.txt",result))
   .catch(error => console.log(error))
 
