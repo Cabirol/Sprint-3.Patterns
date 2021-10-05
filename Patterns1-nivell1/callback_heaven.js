@@ -30,29 +30,43 @@ const reverseText = str =>
     });
 });*/
 
-/*
-function llegirDirectori(directori) {
-    readdir(directori, (error, files) => {
-        if (error) return console.log("Error: Folder inaccessible");
-        return files;
-    })
-    
-};
 
-console.log(llegirDirectori(inbox));
-*/
+// readdir(directori, call1);
 
 
-const llegirDirectori = dirpath => {
+const llegirDirectori = dirPath => {
   return new Promise ((resolve, reject) => {
-    readdir(dirpath, (error, files) => {
+    readdir(dirPath, (error, files) => {
       if (error) return reject(error);
       resolve(files);
     });
   });
 }
 
+const llegirArxiu = filePath => {
+  return new Promise ((resolve, reject) =>{
+    readFile(filePath, "utf8",(error, data) =>{
+      if (error) return reject(error);
+      resolve(data);
+    });
+  });
+}
+
+const escriureArxiu = (filePath,contingut) => {
+  return new Promise ((resolve, reject) =>{
+    writeFile(filePath, contingut, error => {
+      if (error) return reject(error);
+      resolve(console.log(`Reversed file was successfully saved in the outbox!`));
+    });
+  });
+}
+
+
+
 llegirDirectori(inbox)
-    .then(result => console.log(result))
-    .catch(error => console.log(error));
+  .then(result => join(inbox,result[0]))
+  .then(result => llegirArxiu(result))
+  .then(result => reverseText(result))
+  .then(result => escriureArxiu(join(outbox,"file.txt"),result))
+  .catch(error => console.log(error))
 
