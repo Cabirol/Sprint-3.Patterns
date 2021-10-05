@@ -42,7 +42,7 @@ const llegirDirectori = dirPath => {
     });
   });
 }
-const 
+
 const llegirArxiu = filePath => {
   return new Promise ((resolve, reject) =>{
     readFile(filePath, "utf8",(error, data) =>{
