@@ -37,7 +37,7 @@ const reverseText = str =>
 const llegirDirectori = dirPath => {
   return new Promise ((resolve, reject) => {
     readdir(dirPath, (error, files) => {
-      if (error) return reject(error);
+      if (error) reject(new Error("Error: Folder inaccessible"));
       resolve(files);
     });
   });
@@ -46,17 +46,17 @@ const llegirDirectori = dirPath => {
 const llegirArxiu = filePath => {
   return new Promise ((resolve, reject) =>{
     readFile(filePath, "utf8",(error, data) =>{
-      if (error) return reject(error);
+      if (error) reject(new Error("Error: File error"));
       resolve(data);
     });
   });
 }
 
-const escriureArxiu = (filePath,contingut) => {
+const escriureArxiu = (fileName,contingut) => {
   return new Promise ((resolve, reject) =>{
-    writeFile(filePath, contingut, error => {
-      if (error) return reject(error);
-      resolve(console.log(`Reversed file was successfully saved in the outbox!`));
+    writeFile(join(outbox,fileName), contingut, error => {
+      if (error) reject(new Error("Error: File could not be saved!"));
+      resolve(console.log(`${fileName} file was successfully saved in the outbox!`));
     });
   });
 }
@@ -67,6 +67,6 @@ llegirDirectori(inbox)
   .then(result => join(inbox,result[0]))
   .then(result => llegirArxiu(result))
   .then(result => reverseText(result))
-  .then(result => escriureArxiu(join(outbox,"file.txt"),result))
+  .then(result => escriureArxiu("file.txt",result))
   .catch(error => console.log(error))
 
