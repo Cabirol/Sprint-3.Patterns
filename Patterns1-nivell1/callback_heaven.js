@@ -30,6 +30,7 @@ const reverseText = str =>
     });
 });*/
 
+/*
 function llegirDirectori(directori) {
     readdir(directori, (error, files) => {
         if (error) return console.log("Error: Folder inaccessible");
@@ -39,5 +40,19 @@ function llegirDirectori(directori) {
 };
 
 console.log(llegirDirectori(inbox));
+*/
 
+
+const llegirDirectori = dirpath => {
+  return new Promise ((resolve, reject) => {
+    readdir(dirpath, (error, files) => {
+      if (error) return reject(error);
+      resolve(files);
+    });
+  });
+}
+
+llegirDirectori(inbox)
+    .then(result => console.log(result))
+    .catch(error => console.log(error));
 
