@@ -1,3 +1,11 @@
+# Estructura de l'entrega
+
+callback_hell.js és el codi que ens heu proporcionat, callback_heaven.js preten ser el nou codi reestructurat.
+
+Inbox conté dos .txt i Outbox està preparat per rebre els .txt invertits.
+
+La resta del readme son apunts.
+
 # Què fa callback_hell.js?
 
 Copia els arxius de la carpeta inbox, inverteix el seu contingut, i els guarda a la carpeta outbox.

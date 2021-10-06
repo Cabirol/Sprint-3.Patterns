@@ -16,25 +16,7 @@ const reverseText = str =>
         .reverse()
         .join("");
 
-// Read and reverse contents of text files in a directory
-/*readdir(inbox, (error, files) => {
-    if (error) return console.log("Error: Folder inaccessible");
-    files.forEach(file => {
-      readFile(join(inbox, file), "utf8", (error, data) => {
-        if (error) return console.log("Error: File error");
-        writeFile(join(outbox, file), reverseText(data), error => {
-          if (error) return console.log("Error: File could not be saved!");
-          console.log(`${file} was successfully saved in the outbox!`);
-        });
-      });
-    });
-});*/
-
-
-// readdir(directori, call1);
-
-
-const llegirDirectori = dirPath => {
+function llegirDirectori (dirPath) {
   return new Promise ((resolve, reject) => {
     readdir(dirPath, (error, files) => {
       if (error) reject(new Error("Error: Folder inaccessible"));
@@ -43,7 +25,7 @@ const llegirDirectori = dirPath => {
   });
 }
 
-const llegirArxiu = filePath => {
+function llegirArxiu(filePath) {
   return new Promise ((resolve, reject) =>{
     readFile(filePath, "utf8",(error, data) =>{
       if (error) reject(new Error("Error: File error"));
@@ -52,7 +34,7 @@ const llegirArxiu = filePath => {
   });
 }
 
-const escriureArxiu = (fileName,contingut) => {
+function escriureArxiu(fileName,contingut) {
   return new Promise ((resolve, reject) =>{
     writeFile(join(outbox,fileName), contingut, error => {
       if (error) reject(new Error("Error: File could not be saved!"));
@@ -61,11 +43,14 @@ const escriureArxiu = (fileName,contingut) => {
   });
 }
 
+async function readAndreverse(){
+  const files = await llegirDirectori(inbox);
+  let contingut=[];
+  for(let i=0; i<files.length; i++){
+    contingut[i] = await llegirArxiu(join(inbox,files[i]));
+    contingut[i] = reverseText(contingut[i]);
+    await escriureArxiu(files[i],contingut[i]);
+  }
+}
 
-llegirDirectori(inbox)
-  .then(result => join(inbox,result[0]))
-  .then(result => llegirArxiu(result))
-  .then(result => reverseText(result))
-  .then(result => escriureArxiu("a.txt",result))
-  .catch(error => console.log(error))
-
+readAndreverse();
