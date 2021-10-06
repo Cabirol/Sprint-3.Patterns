@@ -1,8 +1,8 @@
 # Estructura de l'entrega
 
-callback_hell.js és el codi que ens heu proporcionat, callback_heaven.js preten ser el nou codi reestructurat.
+callback_hell.js és el codi proporcionat, callback_heaven.js preten ser el nou codi reestructurat.
 
-Inbox conté dos .txt i Outbox està preparat per rebre els .txt invertits.
+inbox conté dos .txt i outbox està preparat per rebre els .txt invertits. outbox conté un .txt perquè git no deixa afegir folders buits.
 
 La resta del readme son apunts.
 
