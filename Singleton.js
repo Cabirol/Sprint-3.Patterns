@@ -8,19 +8,4 @@ Podrà fixar en cada jugador punts guanyats o perduts perquè el marcador canvi�
 La classe Marcador deurà, com a requisit indispensable, implementar un patró Singleton.
 */
 
-class Joc{
 
-}
-
-class Jugador{
-    constructor(nom, punts){
-        this.nom=nom;
-        this.punts=punts;
-    }
-
-}
-
-class Marcador{
-    constructor()
-    
-}
