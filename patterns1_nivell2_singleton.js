@@ -54,6 +54,11 @@ class Joc{
         }
         return console.log(`${_jugador.nom} no és al joc ${this.nom} `);
     }
+    
+    mostraMarcador(){
+        //invoca marcador
+        //fes anar method del marcador
+    }
 }
 
 let joc1 = new Joc("Monster Hunter");
