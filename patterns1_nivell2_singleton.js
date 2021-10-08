@@ -1,9 +1,42 @@
-/*
-Construeixi una aplicació que creï diversos jugadors.
-Els jugadors podran ser afegits a un Joc, que mostrarà un marcador amb les puntuacions i el guanyador. 
-Podrà fixar en cada jugador punts guanyats o perduts perquè el marcador canviï. 
-La classe Marcador deurà, com a requisit indispensable, implementar un patró Singleton.
-*/
+class Marcador{
+
+    mostrarGuanyador(_joc){
+
+        if(!(_joc instanceof Joc)){
+            return console.log(`El joc ${_joc.nom} no existeix.`);
+        }
+
+        let maxim;
+        for(let i=0; i<_joc.punts.length; i++){
+
+            if(_joc.punts[i] || _joc.punts[i]==0){
+                if(!maxim && maxim != 0){
+                    maxim = _joc.punts[i];
+                }else{
+                    maxim = Math.max(maxim, _joc.punts[i]);
+                }   
+            }
+
+        }
+
+        if(!maxim && maxim!=0){
+            return console.log(`El joc ${_joc.nom} no té cap guanyador.`)
+        }
+
+        let guanyadors = [];
+        for(let i=0; i<_joc.punts.length; i++){
+            if (_joc.punts[i] == maxim){
+                guanyadors.push(_joc.jugadors[i].nom);
+            }
+        }
+
+        return console.log(`El guanyador de ${_joc.nom} és ${guanyadors} amb ${maxim} punts.`);
+    }
+
+    mostrarPuntuacions(_joc){
+        //Afegir Codi per crear parells nomjugador:puntuació i ordenar-los de major a menor.
+    }
+}
 
 class Jugador{
     constructor(_nom){
@@ -25,12 +58,12 @@ class Joc{
     afegirJugador(_noujugador){
 
         if (!(_noujugador instanceof Jugador)){
-            return console.log(`El jugador ${_jugador} no existeix.`);
+            return console.log(`El jugador ${_jugador.nom} no existeix.`);
         }
 
         for (let iteracio of this.jugadors){
             if (iteracio == _noujugador){
-                return console.log(`${_noujugador} ja és a ${this.nom}`)
+                return console.log(`${_noujugador.nom} ja és a ${this.nom}`)
             }
         }
         return this.jugadors.push(_noujugador);
@@ -45,7 +78,7 @@ class Joc{
         for(let i=0; i<this.jugadors.length; i++){
             
             if (_jugador == this.jugadors[i]){
-                if (this.punts[i] == null){
+                if (!this.punts[i]){
                     return this.punts[i] = _punts;
                 }
                 return this.punts[i] = this.punts[i] + _punts;
@@ -55,14 +88,16 @@ class Joc{
         return console.log(`${_jugador.nom} no és al joc ${this.nom} `);
     }
     
-    mostraMarcador(){
-        //invoca marcador
-        //fes anar method del marcador
+    mostrarMarcador(){
+        var marcador = new Marcador;
+        //marcador.mostrarPuntuacions(this);
+        marcador.mostrarGuanyador(this);
     }
 }
 
 let joc1 = new Joc("Monster Hunter");
 let joc2 = new Joc("Magic The Gathering");
+let joc3 = new Joc("parxis");
 
 joc1.afegirJugador(jugador1);
 joc1.afegirJugador(jugador2);
@@ -81,3 +116,15 @@ console.log(jugador2);
 console.log(jugador3);
 console.log(joc1);
 console.log(joc2);
+
+
+joc1.mostrarMarcador();
+
+
+//Ara mateix: quan s'assigna un jugador a un joc, aquest no té cap valor de "punts" fins que no se li n'afegeixen amb afegirPunts, si és que es fa.
+//possibilitat: assignar d'entrada zero punts als jugadors amb el method afegirJugadors. té sentit que un jugador pertanyi a un joc i tingui el camp de punts buit?
+//Conseqüència: simplificar funcions que manipulen l'array de puntuacions, perquè ja no han de tenir en compte els valors no definits.
+
+//Implementar singleton
+
+//dividir el programa en diferents arxius?
