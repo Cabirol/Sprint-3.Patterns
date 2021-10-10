@@ -1,4 +1,11 @@
+let instance = null;
 class Marcador{
+    constructor(){
+        if(!instance){
+            instance = this;
+        }
+        return instance;
+    }
 
     mostrarGuanyador(_joc){
 
@@ -60,13 +67,6 @@ class Jugador{
     }
 }
 
-let jugador1 = new Jugador("Manu");
-let jugador2 = new Jugador("Dani");
-let jugador3 = new Jugador("Sergi");
-let jugador4 = new Jugador("Javi");
-let jugador5 = new Jugador("Roger");
-let jugador6 = new Jugador("Joan");
-
 class Joc{
     constructor(_nom){
         this.nom = _nom;
@@ -114,9 +114,17 @@ class Joc{
     }
 }
 
+/*
+let jugador1 = new Jugador("Manu");
+let jugador2 = new Jugador("Dani");
+let jugador3 = new Jugador("Sergi");
+let jugador4 = new Jugador("Javi");
+let jugador5 = new Jugador("Roger");
+let jugador6 = new Jugador("Joan");
+
 let joc1 = new Joc("Monster Hunter");
 let joc2 = new Joc("Magic The Gathering");
-let joc3 = new Joc("Fortnite");
+let joc3 = new Joc("Yu-Gi-Oh!");
 
 joc1.afegirJugador(jugador1);
 joc1.afegirJugador(jugador2);
@@ -137,17 +145,7 @@ joc2.afegirPunts(jugador2, 5);
 joc2.afegirPunts(jugador3, 4);
 joc2.afegirPunts(jugador6, 20);
 
-console.log(joc1);
-console.log(joc2);
-
-
 joc1.mostrarMarcador();
 joc2.mostrarMarcador();
 joc3.mostrarMarcador();
-
-
-//simplificar mostrarGuanyador, perquè ja no ha de tenir en compte els valors no definits.(son zero)
-
-//Implementar singleton
-
-//dividir el programa en diferents arxius?
+*/
