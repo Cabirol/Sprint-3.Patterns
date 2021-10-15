@@ -4,7 +4,7 @@ callback_hell.js és el codi proporcionat, callback_heaven.js preten ser el nou 
 
 inbox conté dos .txt i s'ha de crear el folder outbox (amb el mateix path que inbox) abans de fer còrrer el codi.
 
-La resta son apunts i recordatoris sobre el codi.
+La resta d'aquest Readme son apunts i xuletes per enrecordar-me de les coses.
 
 # Què fa callback_hell.js?
 
