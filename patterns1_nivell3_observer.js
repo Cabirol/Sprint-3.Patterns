@@ -1,31 +1,35 @@
-/*
-Creu una Aplicació que creï diferents objectes Usuari. 
-L'aplicació podrà crear diferents topics, i subscriure els usuaris a ells. 
-Quan un Usuari afegeixi un missatge, s'imprimirà per consola des del topic. 
-També ho imprimiran per consola cadascun dels usuaris que estiguin subscrits al topic (rebran el missatge).
-Creu un topic amb un usuari i un altre amb dos, i mostri la recepció dels missatges pels usuaris. Utilitzi el modulo events.
-*/
-
 const EventEmitter = require('events');
 
 class Emissor extends EventEmitter{};
 
 let emissorEvents = new Emissor();
 
+var arrUsuaris = [];
 class Usuari{
     constructor(_nom){
         this.nom = _nom;
+
+        for(let objecte of arrUsuaris){
+            if (objecte.nom == _nom){
+                throw new Error('Ja hi ha un usuari amb aquest nom.');
+            }
+        }
+        arrUsuaris.push(this);
 
     }
 
     afegirMissatgeATema(_tema, _missatge){
 
-        //comprovar que _tema sigui un objecte de la classe tema.
-
-        //comprovar que aquest usuari està subscrit al tema.
-
-        emissorEvents.emit('missatge emès a ' + _tema.nom, this, _missatge);
-
+        if (!(_tema instanceof Tema)){
+            return console.log(`El tema ${_tema.nom} no existeix.`);
+        }
+        
+        for (let iteracio of _tema.usuaris){
+            if (iteracio == this){
+                return emissorEvents.emit('missatge emès a ' + _tema.nom, this, _missatge);
+            }
+        }
+        console.log(`${this.nom} no està subscrit a ${_tema.nom}.`);
     }
 
     rebreMissatge(_emissor, _tema, _missatge){
@@ -38,13 +42,21 @@ class Usuari{
     }
 }
 
+var arrTemes = [];
 class Tema{
     constructor(_nom){
         this.nom = _nom;
         this.usuaris = [];
 
-        emissorEvents.on('missatge emès a ' + this.nom, (_emissor, _missatge) => {
-            this.imprimirMissatge(_emissor, _missatge);
+        for(let objecte of arrTemes){
+            if (objecte.nom == _nom){
+                throw new Error('Ja hi ha un tema amb aquest nom.');
+            }
+        }
+        arrUsuaris.push(this);
+
+        emissorEvents.on('missatge emès a ' + this.nom, (_usuariEmissor, _missatge) => {
+            this.imprimirMissatge(_usuariEmissor, _missatge);
         });
 
     }
@@ -71,13 +83,13 @@ class Tema{
     
     }
 
-    imprimirMissatge(_emissor, _missatge){
+    imprimirMissatge(_usuariEmissor, _missatge){
 
-        console.log(`L'usuari ${_emissor.nom} ha publicat a ${this.nom}:`);
+        console.log(`L'usuari ${_usuariEmissor.nom} ha publicat a ${this.nom}:`);
         console.log(_missatge);
 
         for(let receptor of this.usuaris){
-            emissorEvents.emit('avisa '+receptor.nom+'de '+ this.nom, _emissor, _missatge);
+            emissorEvents.emit('avisa '+receptor.nom+'de '+ this.nom, _usuariEmissor, _missatge);
         }
     }
 
@@ -85,19 +97,16 @@ class Tema{
 }
 
 let usuari1 = new Usuari('Dani');
-let usuari2 = new Usuari('Marc');
-let usuari3 = new Usuari('Pau');
+let usuari2 = new Usuari('Manuel');
 
-let tema1 = new Tema('Whatsapp');
-let tema2 = new Tema('Twitter');
+let tema1 = new Tema('Música');
+let tema2 = new Tema('Videojocs');
 
 tema1.subscriureUsuari(usuari1);
-tema1.subscriureUsuari(usuari2);
 
 tema2.subscriureUsuari(usuari1);
 tema2.subscriureUsuari(usuari2);
-tema2.subscriureUsuari(usuari3);
 
-usuari1.afegirMissatgeATema(tema1, 'Hola bon dia');
-usuari2.afegirMissatgeATema(tema2, 'No és interessant Twitter');
+usuari1.afegirMissatgeATema(tema1, 'Parlem de música.');
+usuari2.afegirMissatgeATema(tema2, 'Parlem de videojocs.');
 

@@ -28,5 +28,20 @@ El mètode mostrarMarcador crea una (única) instància de la classe Marcador, i
 
 ### Què fa patterns1_nivell3_observer.js?
 
+Hi ha dues classes: Usuari i Tema. Usuari té només la propietat nom, i Tema les propietats nom i usuaris(un array). Mitjançant el mètode de la classe Tema "subscriureUsuari", s'afegeixen Usuaris a l'array "usuaris" de Tema.
+
+Mitjançant el mètode de la classe Usuari "afegirMissatgeATema", els usuaris poden publicar missatges als temes als que estiguin subscrits (es crida el mètode "imprimirMissatge" de la classe Tema) i un cop passa això la resta d'usuaris reben el missatge publicat (es crida el mètode "rebreMissatge" de la classe Usuari.)
+
+Per fer totes aquestes crides s'utilitzen events.
+
+- Hi ha un event al constructor de la classe Tema. És un event diferent per cada tema, que es dispara cada cop que un usuari "afegeixMissatgeATema". Aquest event crida la funció "imprimirMissatge" del tema corresponent.
+
+- Hi ha un altre event al cos del mètode "subscriureUsuari". És un event diferent per cada vegada que un usuari és subscrit a un tema. Es dispara per cada usuari subscrit a un tema, quan s'ha "imprèsMissatge" en aquest tema. Aquest event crida el mètode "rebreMissatge" de la classe Usuari, que fa dues coses diferents: si l'usuari és l'emissor del missatge, avisa que el missatge s'ha emès amb èxit. Si l'usuari és qualsevol dels altres usuaris del tema, publica el missatge i indica de quin tema i usuari prové.
+
+Hi ha dues coses que no he sapigut fer:
+
+Una, els events depenen del nom dels usuaris i dels temes. He afegit al constructor de cadascuna de les classes una forma de no poder crear un objecte amb un nom que ja existeix. Però això no evita que a posteriori es canvii el nom a un que ja existeix.
+
+L'altra, la classe Usuari té dos mètodes, "afegirMissatgeATema" i "rebreMissatge", mentre que la classe Tema té dos mètodes, "subscriureUsuari" i "imprimirMissatge". Només els mètodes "afegirMissatgeATema" i "subscriureUsuari" haurien de poder ser cridats pels usuaris, mentre que els mètodes "rebreMissatge" i "imprimirMissatge" només s'haurien de cridar quan es disparessin els events corresponents, i no pels usuaris, com ara per ara passa.
 
 
