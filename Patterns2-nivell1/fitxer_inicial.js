@@ -1,18 +1,5 @@
-const fs = require('fs');
 const {Pipeline} = require ('./fitxer_extern');
-
-function sumar(sumand1, sumand2){
-    return sumand1 + sumand2;
-}
-
-function restar(minuend, substraend){
-    return minuend - substraend;
-}
-
-
-function multiplicar(factor1, factor2){
-    return factor1*factor2;
-}
+const fs = require('fs');
 
 function jsonLector(jsonPath){
     try {
@@ -24,39 +11,54 @@ function jsonLector(jsonPath){
 }
 var operands = (jsonLector('./nombres.json'));
 
-var resultats = [ 
-                sumar(nombres.primer, nombres.segon),
-                restar(nombres.primer, nombres.segon),
-                multiplicar(nombres.primer, nombres.segon)
-            ];
+function sumar(sumand1, sumand2){
+    return sumand1 + sumand2;
+}
 
+function restar(minuend, substraend){
+    return minuend - substraend;
+}
+
+function multiplicar(factor1, factor2){
+    return factor1*factor2;
+}
 
 const pipeline = Pipeline(
     
-    (_, next) => {
-      console.log(_value)
-      next()
+    (_ctx, next) => {
+      console.log(`Abans dels middlewares:`);
+      console.log(_ctx);
+      next();
+      console.log(`La suma després dels middlewares és: ${sumar(_ctx.primer,_ctx.segon)}`);
+      console.log(`La resta després dels middlewares és: ${restar(_ctx.primer,_ctx.segon)}`);
+      console.log(`El producte després dels middlewares és: ${multiplicar(_ctx.primer,_ctx.segon)}`);
     }
-);
-  
-
-pipeline.push(
-    (_value, next) => {
-      _value.value = _value.value + 21
-      next()
-    },
-    (_value, next) => {
-      _value.value = _value.value * 2
-      next()
-    }
-);
-  
-
-pipeline.push((_value, next) => {
-    console.log(_value)
     
+);
+
+pipeline.push((_ctx, next) => {
+    _ctx.primer = (_ctx.primer)*(_ctx.primer);
+    _ctx.segon = (_ctx.segon)*(_ctx.segon);
+    console.log(`Primer middleware, quadrats:`);
+    console.log(_ctx);
+    next();
+});
+
+pipeline.push((_ctx, next) => {
+    _ctx.primer = (_ctx.primer)*(_ctx.primer)*(_ctx.primer);
+    _ctx.segon = (_ctx.segon)*(_ctx.segon)*(_ctx.segon);
+    console.log(`Segon middleware, cubs:`);
+    console.log(_ctx);
+    next();
 });
   
-  
-pipeline.execute({ value: resultats });
+pipeline.push((_ctx, next) => {
+    _ctx.primer = _ctx.primer/2;
+    _ctx.segon = _ctx.segon/2;
+    console.log(`Tercer middleware, meitats:`);
+    console.log(_ctx);
+    next();
+});
+   
+pipeline.execute(operands);
 
