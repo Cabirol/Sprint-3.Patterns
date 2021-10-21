@@ -23,7 +23,15 @@ const o = {
     a: "name",
     b: "age"
 };
-
 const aDescriptor = Object.getOwnPropertyDescriptor(o, "a");
-
 console.log(aDescriptor);
+
+const object1 = Object.create(Object.prototype, {
+    a: {
+        configurable: false, 
+        writable: false, 
+        enumerable: true, 
+        value: "anything"
+    }
+});
+console.log(object1, Object.getOwnPropertyDescriptor(object1, "a"));
