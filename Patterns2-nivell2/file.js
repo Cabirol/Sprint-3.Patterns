@@ -4,8 +4,19 @@ Aquesta funció efectuarà una conversió de moneda a euros multiplicant pel coe
 Crea una petita aplicació que calculi el cost de N articles al preu X, aplicant diverses conversions que usin el Decorator del punt anterior.
 
 https://www.youtube.com/watch?v=OHxYR7pUDVU
+
+https://trekinbami.medium.com/using-decorators-in-javascript-a44296e418c7
 */
 const fs = require('fs');
+
+const monedes = [   
+    "USD",
+    "GBP",
+    "CHF",
+    "JPY",
+    "CAD",
+    "CNY"
+]
 
 function jsonLector(jsonPath){
     try {
@@ -19,11 +30,22 @@ var conversions = (jsonLector('./currency_conversions.json'));
 
 console.log(conversions);
 
-const o = {
-    a: "name",
-    b: "age"
-};
+function preuEnEuros(_preu, _moneda){
+    //error si _moneda no és a l'array monedes.
+    return _preu*conversions[_moneda+"_EUR"];
+}
 
-const aDescriptor = Object.getOwnPropertyDescriptor(o, "a");
+console.log(preuEnEuros(100, "USD"));
 
-console.log(aDescriptor);
+class Article{
+    constructor(_nom, _preu, _moneda){
+        this.nom = _nom;
+        this.preu = _preu;
+        this.moneda = _moneda;
+    }
+
+    preuNarticles(n){
+        console.log(`El cost total és de ${n*this.preu} ${this.moneda}`);
+    }
+}
+
